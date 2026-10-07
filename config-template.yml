@@ -1,0 +1,11 @@
+# C4 Architecture Diagrams configuration
+# Installed as .specify/extensions/c4/c4-config.yml. Edit that file to change
+# where architecture documents are written.
+
+# Directory (relative to the repository root) for the project-level views:
+# context.md, containers.md and erd.md.
+architecture_dir: "docs/architecture"
+
+# File name of the per-feature architecture document, written inside the
+# feature directory (specs/<feature>/).
+feature_file: "architecture.md"
