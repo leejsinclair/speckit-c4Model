@@ -19,11 +19,11 @@ C4Container
     Person(customer, "Customer", "Buys products through the storefront")
 
     System_Boundary(system, "[SYSTEM NAME]") {
-        Container(webApp, "Web App", "TypeScript, React", "Storefront and checkout user interface")
         Container(orderApi, "Order API", "TypeScript, Fastify", "Handles catalogue queries and order placement")
+        Container(webApp, "Web App", "TypeScript, React", "Storefront and checkout user interface")
+        ContainerDb(ordersDb, "Orders Database", "PostgreSQL 16", "Stores customers, products and orders")
         ContainerQueue(eventBus, "Event Bus", "RabbitMQ", "Carries order lifecycle events")
         Container(notifier, "Notification Worker", "TypeScript, Node.js", "Turns order events into customer messages")
-        ContainerDb(ordersDb, "Orders Database", "PostgreSQL 16", "Stores customers, products and orders")
     }
 
     System_Ext(paymentProvider, "Payment Provider", "Authorises and captures card payments")

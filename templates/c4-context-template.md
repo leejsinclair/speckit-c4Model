@@ -14,13 +14,13 @@
 C4Context
     title System Context for [SYSTEM NAME]
 
-    Person(customer, "Customer", "Buys products through the storefront")
     Person(supportAgent, "Support Agent", "Resolves order and payment issues")
+    Person(customer, "Customer", "Buys products through the storefront")
 
     System(system, "[SYSTEM NAME]", "Lets customers browse products and place orders")
 
-    System_Ext(paymentProvider, "Payment Provider", "Authorises and captures card payments")
     System_Ext(emailService, "Email Service", "Delivers transactional email")
+    System_Ext(paymentProvider, "Payment Provider", "Authorises and captures card payments")
 
     Rel(customer, system, "Browses products and places orders using")
     Rel(supportAgent, system, "Looks up and amends orders using")
