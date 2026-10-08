@@ -69,6 +69,15 @@ UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
 - Do not put double quotes, parentheses or commas inside a label or description.
 - Layout follows declaration order. Declare people first, then the system or
   boundary, then external systems, then all `Rel` lines.
+- Within each peer group and boundary, put the most connected element near its
+  directly connected elements; keep branch dependencies close to their caller.
+  Avoid alphabetical ordering when it separates related elements.
+- Treat declaration order as a presentation choice, not an architecture change.
+  Keep elements in their existing peer groups and boundaries, and preserve the
+  existing order unless a rendered comparison shows a readability improvement.
+- Mermaid C4 layout is experimental. Check proposed ordering in the renderer used
+  by the project; do not assume a valid diagram or a layout directive improves it.
+  `UpdateLayoutConfig` row settings can be renderer-version dependent.
 
 ## Sequence diagram rules
 

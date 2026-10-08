@@ -75,8 +75,13 @@ Below, `ARCH_DIR` is `architecture_dir` resolved from the repository root.
    `Not applicable: [reason]`.
 
 8. **Preserve and record.**
-   - Edit existing files in place. Keep hand-written prose, existing aliases and
-     existing element order; change only what the evidence requires.
+   - Edit existing files in place. Keep hand-written prose and existing aliases;
+     treat existing declaration order as the baseline.
+   - Within peer groups and existing boundaries, compare the baseline with a
+     connectivity-aware order in the target Mermaid renderer when practical. Keep
+     the order that best avoids lines through unrelated elements, label collisions
+     and crossings; retain the baseline when the rendered result is not clearer.
+     Do not move elements between groups or boundaries.
    - Never remove an element only because the current feature does not mention it.
      Remove an element when the Architecture Impact table says `Remove` or the
      repository shows it is gone.

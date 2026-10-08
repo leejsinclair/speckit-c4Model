@@ -67,7 +67,10 @@ Below, `ARCH_DIR` is `architecture_dir` resolved from the repository root and
    plan's Technical Context and Project Structure. For each one write a subsection
    with one `C4Component` diagram and its component table. Show the components the
    feature touches and the neighbours they call; mark each component New, Changed or
-   Existing, and give its source location from the plan's source tree.
+   Existing, and give its source location from the plan's source tree. Within the
+   existing boundary, order the most connected component near its direct dependencies
+   and keep branch dependencies near their caller. Preserve that order only when a
+   rendered comparison is clearer; do not change boundary membership or relationships.
 
 7. **Flows.** Write one `sequenceDiagram` per user story's primary path, in priority
    order. Add an alternate or failure flow where the spec's edge cases or the

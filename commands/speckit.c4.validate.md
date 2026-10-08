@@ -51,7 +51,14 @@ key that is missing or when the file is absent:
      quotes balance, and every alias used in a relationship is declared. State in
      the report that syntax was reviewed manually, not parsed.
 
-4. **C4 rules.** Check each C4 diagram against the conventions:
+4. **Rendered readability.** When `mmdc` is available, inspect the rendered C4
+   diagrams as well as their source. Report an **INFO** finding when a relationship
+   crosses an unrelated element or label, labels overlap, relationship lines cross
+   or coincide, or routes are unnecessarily long. Confirm findings in the rendering;
+   syntax validity alone does not establish readability. If rendering is unavailable,
+   say that layout was not visually checked.
+
+5. **C4 rules.** Check each C4 diagram against the conventions:
    - one level per diagram, and one container per component diagram;
    - every container and component has a technology and a description;
    - every relationship has a label, and a protocol between containers;
@@ -59,7 +66,7 @@ key that is missing or when the file is absent:
    - no leftover template placeholders (`[SYSTEM NAME]`, `[Component 1]`) or
      template example content.
 
-5. **Consistency across views.**
+6. **Consistency across views.**
    - People and external systems in `containers.md` match `context.md`.
    - Every container boundary in a feature component diagram is a container in
      `containers.md`, or is listed as `Add` in the feature's Architecture Impact
@@ -67,7 +74,7 @@ key that is missing or when the file is absent:
    - An element has the same alias, label and technology everywhere it appears.
    - Every database container has a section in `erd.md`.
 
-6. **Consistency with the feature documents.**
+7. **Consistency with the feature documents.**
    - Every sequence participant is an element in a C4 view.
    - Every user story in `FEATURE_SPEC` has at least one sequence diagram, and each
      diagram names the story it covers.
@@ -79,7 +86,7 @@ key that is missing or when the file is absent:
    - The Architecture Impact table accounts for every difference between the
      feature diagrams and the project-level views.
 
-7. **Links.** `FEATURE_SPEC` and `IMPL_PLAN` link to the architecture documents, the
+8. **Links.** `FEATURE_SPEC` and `IMPL_PLAN` link to the architecture documents, the
    feature architecture document links back to them, and every relative link
    resolves to a file that exists.
 

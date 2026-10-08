@@ -28,6 +28,9 @@ The project-level views are living documents. Each feature records what it chang
 in its Architecture Impact table, and `speckit.c4.system` merges that into the
 project-level views once the feature is built.
 
+See the [Mermaid C4 layout evaluation](docs/c4-layout-evaluation.md) for rendered
+comparisons and the declaration-order guidance used by the templates.
+
 How the documents reference each other:
 
 - `spec.md` gets a **System Context** section linking to `context.md` and listing
