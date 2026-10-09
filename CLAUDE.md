@@ -15,12 +15,12 @@ their manifest at the repository root so a single GitHub tag archive installs ei
   command and appends sections to the core spec and plan templates. It needs the
   extension; `requires.extensions` only warns, it does not install it.
 
-There is no build step or linter. Every file is a manifest, or Markdown that an AI
-agent reads as a prompt or a template, except `scripts/python/c4_layout.py`, a single-file
-Python helper (standard library only) that the commands run to compare and measure
-C4 diagram layouts. It has a `unittest` suite in `tests/`. "Correct"
-means: Spec Kit installs it, the composed commands read sensibly, and every Mermaid
-block renders.
+There is no build step. Most files are manifests or Markdown that an AI agent reads
+as a prompt or template. `scripts/python/c4_layout.py` is a single-file Python helper
+(standard library only) that the commands run to compare and measure C4 diagram
+layouts. It has a `unittest` suite in `tests/`. "Correct" means: the tests and
+linters pass, Spec Kit installs the packages, the composed commands read sensibly,
+and every Mermaid block renders.
 
 ## Commands
 
@@ -67,6 +67,18 @@ latest). The third form also renders the fixtures again and fails if the rendere
 has changed. The fourth regenerates the candidate files, SVGs and `expected.json`
 after an intended change to the script; read the diff before keeping it.
 
+Run all repository linters:
+
+```bash
+uvx ruff check .
+uvx bandit -c bandit.yml -r scripts tests
+npx -y markdownlint-cli2
+```
+
+The pre-commit hook runs these after the tests, skipping Ruff and Bandit if `uvx`
+is unavailable and Markdown lint if `npx` is unavailable. GitHub Actions requires
+all three.
+
 Render every Mermaid block in a Markdown file (one SVG per block; a parse error
 fails the command):
 
@@ -111,8 +123,9 @@ look the way they do):
   rewritten, so it spells out the `.specify/extensions/c4/templates/...` path.
 - In extension command files, `scripts/<name>` is rewritten to
   `.specify/extensions/c4/scripts/<name>`. Shipped scripts live under
-  `scripts/<runtime>/` (`scripts/python/`), as in Spec Kit's bundled extensions. The preset's wrapper and
-  `templates/c4-conventions.md` are not rewritten, so they spell out the full path.
+  `scripts/<runtime>/` (`scripts/python/`), as in Spec Kit's bundled extensions.
+  The preset's wrapper and `templates/c4-conventions.md` are not rewritten, so
+  they spell out the full path.
 - Refer to other commands with tokens such as `__SPECKIT_COMMAND_C4_SYSTEM__`, never
   a literal slash name. Each agent integration renders the token its own way
   (`/speckit-c4-system` in Claude Code, `/speckit.c4.system` elsewhere).

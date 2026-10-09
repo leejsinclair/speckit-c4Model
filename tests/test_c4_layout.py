@@ -10,7 +10,9 @@ the layout. Regenerate fixtures with tests/make_fixtures.py.
 import json
 import os
 import shlex
-import subprocess
+
+# Tests invoke the repository script directly without a shell.
+import subprocess  # nosec B404
 import sys
 import tempfile
 import unittest
@@ -36,8 +38,9 @@ def expected(diagram):
 
 
 def run(*args):
-    return subprocess.run([sys.executable, "-B", str(SCRIPT), *map(str, args)],
-                          capture_output=True, text=True)
+    # The executable and script are fixed test paths.
+    return subprocess.run(  # nosec B603
+        [sys.executable, "-B", str(SCRIPT), *map(str, args)], capture_output=True, text=True)
 
 
 def fake_renderer(diagram):
@@ -90,8 +93,8 @@ class FidelityTest(unittest.TestCase):
         return c4_layout.differences(self.base, c4_layout.inventory(lines))
 
     def edit(self, old, new):
-        self.assertTrue(any(old in l for l in self.lines), old)
-        return [l.replace(old, new) for l in self.lines]
+        self.assertTrue(any(old in line for line in self.lines), old)
+        return [line.replace(old, new) for line in self.lines]
 
     def test_reordering_is_not_a_difference(self):
         self.assertEqual(self.diff(lines_of("container", "connected")), [])
@@ -106,14 +109,14 @@ class FidelityTest(unittest.TestCase):
         self.assertEqual(len(self.diff(self.edit('"Calls"', '"Invokes"'))), 2)
 
     def test_removed_relationship_and_element(self):
-        without_rel = [l for l in self.lines if "Rel(notifier, emailService" not in l]
+        without_rel = [line for line in self.lines if "Rel(notifier, emailService" not in line]
         self.assertEqual(len(self.diff(without_rel)), 1)
-        without_element = [l for l in self.lines if "System_Ext(emailService" not in l]
+        without_element = [line for line in self.lines if "System_Ext(emailService" not in line]
         self.assertEqual(self.diff(without_element), ["element removed: emailService"])
 
     def test_element_moved_out_of_its_boundary(self):
-        moved = [l for l in self.lines if "Container(notifier" not in l]
-        moved.insert(3, next(l for l in self.lines if "Container(notifier" in l))
+        moved = [line for line in self.lines if "Container(notifier" not in line]
+        moved.insert(3, next(line for line in self.lines if "Container(notifier" in line))
         self.assertEqual(self.diff(moved), ["element changed: notifier"])
 
     def test_changed_element_type(self):
@@ -154,11 +157,16 @@ class CandidateTest(unittest.TestCase):
                                                        c4_layout.inventory(lines)), [], name)
                 if name != "rows":
                     self.assertEqual(sorted(lines), sorted(base), f"{diagram}/{name} edits a line")
-                    is_rel = lambda l: l.strip().startswith("Rel")
+
+                    def is_rel(line):
+                        return line.strip().startswith("Rel")
+
                     self.assertEqual(list(filter(is_rel, lines)), list(filter(is_rel, base)))
 
     def test_peer_groups_keep_their_position(self):
-        kinds = lambda lines: [l.strip().split("(")[0] for l in lines if "(" in l]
+        def kinds(lines):
+            return [line.strip().split("(")[0] for line in lines if "(" in line]
+
         base = kinds(lines_of("context"))
         for name in ("connected", "primary-path", "reversed-peers"):
             self.assertEqual(kinds(lines_of("context", name)), base, name)

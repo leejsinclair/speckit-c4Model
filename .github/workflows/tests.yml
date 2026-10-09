@@ -15,6 +15,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+      - name: Run Ruff
+        run: uvx ruff check .
+      - name: Run Bandit
+        run: uvx bandit -c bandit.yml -r scripts tests
+      - name: Run Markdown lint
+        run: npx -y markdownlint-cli2
+
   layout-helper:
     name: c4_layout.py (Python ${{ matrix.python }})
     runs-on: ubuntu-latest

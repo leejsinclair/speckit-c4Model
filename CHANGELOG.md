@@ -20,6 +20,9 @@ one version number.
 - The tests run in a pre-commit hook (`.githooks/`, enabled by
   `scripts/setup-dev.sh`) and in GitHub Actions on pull requests and pushes to
   `main`.
+- Ruff, Bandit and markdownlint-cli2 configuration, with checks in the pre-commit
+  hook and GitHub Actions. Development-only lint configuration is excluded from
+  extension packages.
 
 ## [0.1.0] - 2026-10-08
 

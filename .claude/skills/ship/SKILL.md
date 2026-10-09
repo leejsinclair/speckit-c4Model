@@ -5,6 +5,9 @@ description: Run this repo's checks, then commit and push to the branch the user
 
 1. Run the checks that apply to the changed files (see "Commands" in `CLAUDE.md`).
    Stop and report if any fails.
+   - Run the repository linters for every change:
+     `uvx ruff check .`, `uvx bandit -c bandit.yml -r scripts tests`, and
+     `npx -y markdownlint-cli2`.
    - Any change to `scripts/python/c4_layout.py` or `tests/`: run
      `python3 -B -m unittest discover -s tests`.
    - Any changed Markdown file with a Mermaid block: render it with

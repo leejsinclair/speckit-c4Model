@@ -1,4 +1,6 @@
-## System Context *(include if the feature involves people or external systems)*
+<!-- markdownlint-disable-file MD041 -->
+
+## System Context *(when the feature involves people or external systems)*
 
 <!--
   ACTION REQUIRED: Describe WHO and WHAT this feature interacts with, in business
@@ -14,4 +16,5 @@
 |--------------------------|------|----------------------|------------------|
 | [e.g., Customer] | [Person / External system] | [What they do or provide in this feature] | [Yes / New] |
 
-**Changes to the system context**: [None, or the people and external systems this feature adds or stops using]
+**Changes to the system context**: [None, or the people and external systems this
+feature adds or stops using]

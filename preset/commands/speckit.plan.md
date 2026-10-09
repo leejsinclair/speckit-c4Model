@@ -11,6 +11,8 @@ handoffs:
     prompt: Create a checklist for the following domain...
 ---
 
+<!-- markdownlint-disable-file MD041 -->
+
 > **C4 Model preset: additional Phase 1 deliverable.** This planning run must also
 > produce the feature's architecture document, `architecture.md`, as described in
 > "C4 Architecture Diagrams" at the end of this command. It is a Phase 1 output

@@ -21,9 +21,13 @@ import math
 import re
 import shlex
 import shutil
-import subprocess
+
+# Mermaid is invoked as an argument list without a shell.
+import subprocess  # nosec B404
 import sys
-import xml.etree.ElementTree as ET
+
+# Only locally generated Mermaid SVGs are parsed.
+import xml.etree.ElementTree as ET  # nosec B405
 from pathlib import Path
 
 MACRO = re.compile(r"^\s*([A-Za-z_]+)\s*\((.*)\)\s*(\{)?\s*$")
@@ -50,7 +54,8 @@ def c4_blocks(path):
                 current = None
             elif current is not None:
                 current.append(line)
-    return [b for b in blocks if next((l for l in b if l.strip()), "").strip().startswith("C4")]
+    return [block for block in blocks
+            if next((line for line in block if line.strip()), "").strip().startswith("C4")]
 
 
 def load_block(path, number):
@@ -117,7 +122,7 @@ def inventory(lines):
                              "args": item["args"][1:], "boundary": parent["alias"]})
         elif "rel" in item:
             rels.append(item["rel"])
-    return {"type": next(l for l in lines if l.strip()).strip(),
+    return {"type": next(line for line in lines if line.strip()).strip(),
             "elements": elements, "relationships": rels}
 
 
@@ -187,7 +192,10 @@ def graph(tree):
 def connected_order(links):
     def key(run, depth):
         members = [aliases_of(it) for it in run]
-        touch = lambda i, others: sum(len(links.get(a, set()) & others) for a in members[i])
+
+        def touch(index, others):
+            return sum(len(links.get(alias, set()) & others) for alias in members[index])
+
         degree = [sum(len(links.get(a, ())) for a in m) for m in members]
         left, placed, seen = list(range(len(run))), [], set()
         while left:
@@ -215,12 +223,12 @@ def path_order(tree, rels):
 
 def with_rows(lines):
     """Baseline plus a row-width setting; its effect depends on the renderer version."""
-    current = next((l for l in lines if "UpdateLayoutConfig" in l), None)
+    current = next((line for line in lines if "UpdateLayoutConfig" in line), None)
     if current:
         width = "2" if '$c4ShapeInRow="3"' in current else "3"
-        return [ROWS.format(width).join(re.split(r"UpdateLayoutConfig\(.*\)", l))
-                if l is current else l for l in lines]
-    last = max(i for i, l in enumerate(lines) if l.strip())
+        return [ROWS.format(width).join(re.split(r"UpdateLayoutConfig\(.*\)", line))
+                if line is current else line for line in lines]
+    last = max(index for index, line in enumerate(lines) if line.strip())
     indent = re.match(r"\s*", lines[last]).group(0)
     return lines[:last + 1] + [indent + ROWS.format("3")] + lines[last + 1:]
 
@@ -233,7 +241,11 @@ def make_candidates(lines):
         return emit(tree)
 
     rels, links = graph(parse(lines))
-    reverse_at = lambda level: lambda run, depth: run[::-1] if (depth == 0) == level else run
+    def reverse_at(level):
+        def reverse(run, depth):
+            return run[::-1] if (depth == 0) == level else run
+        return reverse
+
     reversed_peers = variant(reverse_at(True))
     if reversed_peers == lines:
         reversed_peers = variant(reverse_at(False))
@@ -271,7 +283,7 @@ def shape_box(el, ox, oy):
     """Bounding box of a node's outline (rect, person head, or cylinder path)."""
     xs, ys = [], []
     for child in el.iter():
-        if "label" == child.get("class"):
+        if child.get("class") == "label":
             break
         cls = child.get("class", "")
         if tag(child) == "rect" and child.get("width"):
@@ -320,7 +332,8 @@ def route_points(el):
 
 
 def read_svg(path):
-    root = ET.parse(path).getroot()
+    # Mermaid CLI generated this local SVG; accepting arbitrary XML is outside this tool's boundary.
+    root = ET.parse(path).getroot()  # nosec B314
     prefix = root.get("id", "") + "-"
     view = [float(v) for v in root.get("viewBox", "0 0 0 0").split()]
     nodes, edges, titles = {}, [], []
@@ -465,8 +478,10 @@ NOTE = ("N routes through unrelated elements, O relationship labels overlapping 
 
 def render(cmd, source, target):
     extra = ["-b", "white"] if str(target).endswith(".png") else []
-    run = subprocess.run(cmd + ["-i", str(source), "-o", str(target)] + extra,
-                         capture_output=True, text=True)
+    # argv comes from the user's configured Mermaid command and is never passed to a shell.
+    run = subprocess.run(  # nosec B603
+        cmd + ["-i", str(source), "-o", str(target)] + extra,
+        capture_output=True, text=True)
     if run.returncode != 0 or not Path(target).exists():
         return (run.stderr or run.stdout).strip().splitlines()[-1:] or ["render failed"]
     return None
@@ -517,8 +532,9 @@ def cmd_optimise(args):
             "note": f"Mermaid renderer '{cmd[0]}' not found (pass --mmdc). Nothing was rendered; keep the "
                     "existing order and report the layout as not checked. declaration_distance "
                     "is a graph-only estimate, not a measurement.",
-            "candidates": [{"name": n, "source": str(p), "declaration_distance": declaration_distance(l)}
-                           for n, p, l in files]}, indent=2))
+            "candidates": [{"name": name, "source": str(path),
+                            "declaration_distance": declaration_distance(lines)}
+                           for name, path, lines in files]}, indent=2))
         return
 
     result = {"measured": True, "renderer": " ".join(cmd), "note": NOTE}

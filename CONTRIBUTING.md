@@ -7,8 +7,9 @@ an AI agent reads as a command or a template.
 ## Setup
 
 You need the [Spec Kit CLI](https://github.com/github/spec-kit) (`specify`) 1.0.0 or
-later, Node.js (for `npx`), and `jq`. [Claude Code](https://claude.com/claude-code)
-is optional; the repository includes a project configuration for it.
+later, Node.js (for `npx`), `uv` (for `uvx`), and `jq`.
+[Claude Code](https://claude.com/claude-code) is optional; the repository includes
+a project configuration for it.
 
 ```bash
 git clone https://github.com/leejsinclair/speckit-c4Model
@@ -76,9 +77,19 @@ standard library and pre-rendered fixtures, so they need no Mermaid CLI:
 python3 -B -m unittest discover -s tests
 ```
 
-The same tests run before every commit once `./scripts/setup-dev.sh` has pointed
-git at `.githooks/`, and on GitHub for every pull request and every push to `main`
-(`.github/workflows/tests.yml`), on Python 3.9 and the latest Python 3.
+Run the repository linters before submitting any change:
+
+```bash
+uvx ruff check .
+uvx bandit -c bandit.yml -r scripts tests
+npx -y markdownlint-cli2
+```
+
+The tests and linters run before every commit once `./scripts/setup-dev.sh` has
+pointed Git at `.githooks/`. The hook skips Ruff and Bandit when `uvx` is missing,
+and Markdown lint when `npx` is missing. GitHub Actions always runs all three
+linters, plus the tests on Python 3.9 and the latest Python 3, for pull requests
+and pushes to `main`.
 
 When a change to the script is meant to alter candidates or measurements, regenerate
 the fixtures and review the diff:

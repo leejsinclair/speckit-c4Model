@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Run the layout helper's tests before each commit. Enabled by
-# scripts/setup-dev.sh, which sets core.hooksPath to this directory.
-# The tests use only the Python standard library and take about a second.
+# Run tests and available linters before each commit. Enabled by scripts/setup-dev.sh,
+# which sets core.hooksPath to this directory.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -15,4 +14,17 @@ if ! out=$("$python" -B -m unittest discover -s tests 2>&1); then
   echo "$out" >&2
   echo "pre-commit: tests failed; commit stopped." >&2
   exit 1
+fi
+
+if command -v uvx >/dev/null 2>&1; then
+  uvx ruff check .
+  uvx bandit -c bandit.yml -r scripts tests
+else
+  echo "pre-commit: uvx not found; skipping Ruff and Bandit." >&2
+fi
+
+if command -v npx >/dev/null 2>&1; then
+  npx -y markdownlint-cli2
+else
+  echo "pre-commit: npx not found; skipping Markdown lint." >&2
 fi
