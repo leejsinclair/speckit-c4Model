@@ -1,0 +1,19 @@
+---
+name: ship
+description: Run this repo's checks, then commit and push to the branch the user names
+---
+
+1. Run the checks that apply to the changed files (see "Commands" in `CLAUDE.md`).
+   Stop and report if either fails.
+   - Any changed Markdown file with a Mermaid block: render it with
+     `npx -y @mermaid-js/mermaid-cli -i <file> -o <scratchpad>/out.svg`.
+   - Any change to `extension.yml`, `preset.yml`, `commands/`, `templates/` or
+     `preset/`: install both packages with `--dev` into a throwaway project outside
+     this repo and confirm `specify extension list` and `specify preset list` show
+     them.
+2. Run `git status`; exclude git-ignored and runtime files.
+3. Commit with a concise message describing the change.
+4. Push to the branch the user named. If none was named, push the current branch.
+   Never create a new branch without asking.
+5. Report the commit hash and the branch, and say which checks were run and which
+   were not.
