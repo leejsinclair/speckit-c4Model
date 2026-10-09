@@ -208,6 +208,11 @@ erDiagram
     }
 ```
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, how to check a change
+and what a pull request needs.
+
 ## License
 
-[MIT](LICENSE)
+Released under the [MIT License](LICENSE). Copyright (c) 2026 Lee Sinclair.
