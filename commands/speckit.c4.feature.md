@@ -36,6 +36,7 @@ key that is missing or when the file is absent:
 
 - `architecture_dir`: `docs/architecture`
 - `feature_file`: `architecture.md`
+- `mermaid_cli`: `mmdc`
 
 Below, `ARCH_DIR` is `architecture_dir` resolved from the repository root and
 `FEATURE_ARCH` is `FEATURE_DIR/<feature_file>`.
@@ -67,10 +68,11 @@ Below, `ARCH_DIR` is `architecture_dir` resolved from the repository root and
    plan's Technical Context and Project Structure. For each one write a subsection
    with one `C4Component` diagram and its component table. Show the components the
    feature touches and the neighbours they call; mark each component New, Changed or
-   Existing, and give its source location from the plan's source tree. Within the
-   existing boundary, order the most connected component near its direct dependencies
-   and keep branch dependencies near their caller. Preserve that order only when a
-   rendered comparison is clearer; do not change boundary membership or relationships.
+   Existing, and give its source location from the plan's source tree. Once a
+   diagram's content is complete, choose its declaration order with the "Layout
+   optimisation" procedure in the conventions, using
+   `python3 scripts/python/c4_layout.py optimise` with `--mmdc "<mermaid_cli>"`. Do not
+   change boundary membership or relationships.
 
 7. **Flows.** Write one `sequenceDiagram` per user story's primary path, in priority
    order. Add an alternate or failure flow where the spec's edge cases or the
@@ -101,5 +103,7 @@ Below, `ARCH_DIR` is `architecture_dir` resolved from the repository root and
 
 Tell the user the path of `FEATURE_ARCH`, how many component, sequence and ER
 diagrams it contains, the Architecture Impact rows that are not `None`, and anything
-you could not determine from the feature documents. Suggest
+you could not determine from the feature documents. For each component diagram, say
+whether its layout was rendered and already sufficient, rendered and optimised (how
+many candidates, which order was chosen), or not checked. Suggest
 `__SPECKIT_COMMAND_C4_VALIDATE__` as the next step.

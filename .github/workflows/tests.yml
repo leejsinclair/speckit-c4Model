@@ -1,0 +1,33 @@
+name: Tests
+
+# Pull requests are the gate before merge. Pushes to main cover direct pushes and
+# record the state each release tag is cut from.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  layout-helper:
+    name: c4_layout.py (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The script ships to users' machines, so test the oldest supported
+        # Python as well as the newest.
+        python: ["3.9", "3.x"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Run tests
+        run: python -B -m unittest discover -s tests -v

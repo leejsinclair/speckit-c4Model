@@ -24,6 +24,7 @@ key that is missing or when the file is absent:
 
 - `architecture_dir`: `docs/architecture`
 - `feature_file`: `architecture.md`
+- `mermaid_cli`: `mmdc`
 
 Below, `ARCH_DIR` is `architecture_dir` resolved from the repository root.
 
@@ -77,11 +78,11 @@ Below, `ARCH_DIR` is `architecture_dir` resolved from the repository root.
 8. **Preserve and record.**
    - Edit existing files in place. Keep hand-written prose and existing aliases;
      treat existing declaration order as the baseline.
-   - Within peer groups and existing boundaries, compare the baseline with a
-     connectivity-aware order in the target Mermaid renderer when practical. Keep
-     the order that best avoids lines through unrelated elements, label collisions
-     and crossings; retain the baseline when the rendered result is not clearer.
-     Do not move elements between groups or boundaries.
+   - For the context and container diagrams, follow the "Layout optimisation"
+     procedure in the conventions, using `python3 scripts/python/c4_layout.py optimise`
+     with `--mmdc "<mermaid_cli>"`. Retain the baseline when it is already
+     sufficient or the rendered result is not clearer. Do not move elements between
+     groups or boundaries.
    - Never remove an element only because the current feature does not mention it.
      Remove an element when the Architecture Impact table says `Remove` or the
      repository shows it is gone.
@@ -96,6 +97,8 @@ Below, `ARCH_DIR` is `architecture_dir` resolved from the repository root.
 ## Report
 
 List the files created or changed and, per file, the elements added, changed and
-removed. State anything you inferred without direct evidence so the user can confirm
+removed. For the context and container diagrams, say whether the layout was rendered
+and already sufficient, rendered and optimised (how many candidates, which order was
+chosen), or not checked. State anything you inferred without direct evidence so the user can confirm
 it. If you could not determine the system's containers at all, say so and ask the
 user to describe them rather than inventing them.

@@ -5,6 +5,22 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). The extension and the preset share
 one version number.
 
+## [Unreleased]
+
+### Added
+
+- Layout optimisation for C4 diagrams. `scripts/python/c4_layout.py` (Python 3 standard
+  library only) checks that a reorder leaves elements, boundaries and relationships
+  unchanged, generates candidate declaration orders, and measures rendered SVGs.
+  It stops early when the diagram as written is already readable.
+- "Layout optimisation" section in the conventions, used by `speckit.c4.system`,
+  `speckit.c4.feature`, `speckit.c4.validate` and the preset's plan wrapper.
+- `mermaid_cli` setting for the command that runs the Mermaid CLI.
+- `unittest` suite and pre-rendered fixtures for `scripts/python/c4_layout.py` in `tests/`.
+- The tests run in a pre-commit hook (`.githooks/`, enabled by
+  `scripts/setup-dev.sh`) and in GitHub Actions on pull requests and pushes to
+  `main`.
+
 ## [0.1.0] - 2026-10-08
 
 ### Added
