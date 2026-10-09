@@ -1,3 +1,5 @@
+<!-- markdownlint-disable-file MD041 -->
+
 ## Architecture
 
 <!--
@@ -7,9 +9,11 @@
   docs/architecture/).
 -->
 
-**Feature architecture**: [architecture.md](./architecture.md) (C4 component views, sequence diagrams, ER diagram)
+**Feature architecture**: [architecture.md](./architecture.md) (C4 component views,
+sequence diagrams, ER diagram)
 
-**System views**: [Context]([relative path to context.md]) | [Containers]([relative path to containers.md]) | [ERD]([relative path to erd.md])
+**System views**: [Context]([relative path to context.md]) |
+[Containers]([relative path to containers.md]) | [ERD]([relative path to erd.md])
 
 | View | Impact of this feature |
 |------|------------------------|

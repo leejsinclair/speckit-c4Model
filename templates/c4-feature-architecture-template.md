@@ -1,8 +1,10 @@
 # Architecture: [FEATURE NAME]
 
 **Feature**: `[###-feature-name]` | **Date**: [DATE]
-**Feature docs**: [Spec](./spec.md) | [Plan](./plan.md) | [Data model](./data-model.md) | [Contracts](./contracts/)
-**System views**: [Context]([relative path to context.md]) | [Containers]([relative path to containers.md]) | [ERD]([relative path to erd.md])
+**Feature docs**: [Spec](./spec.md) | [Plan](./plan.md) |
+[Data model](./data-model.md) | [Contracts](./contracts/)
+**System views**: [Context]([relative path to context.md]) |
+[Containers]([relative path to containers.md]) | [ERD]([relative path to erd.md])
 
 <!--
   ACTION REQUIRED: Replace every example below with this feature's real design.

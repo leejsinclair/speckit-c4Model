@@ -107,6 +107,19 @@ Claude Code and `/speckit.c4.system` in agents that use dotted command names.
 [Mermaid CLI](https://github.com/mermaid-js/mermaid-cli) (`mmdc`) when it is
 installed and falls back to a manual review when it is not.
 
+### Layout optimisation
+
+Mermaid places C4 elements in declaration order. When Python 3 and a Mermaid CLI
+are available, the commands use `scripts/python/c4_layout.py` (standard library only) to
+render each C4 diagram and measure it: lines through unrelated elements, label
+overlaps and crossings. A diagram that is already readable is left alone.
+Otherwise the script renders up to five orderings of the same elements, ranks
+them, and the agent picks one after looking at the images. Only declaration order
+changes; a fidelity check confirms the elements, boundaries and relationships are
+identical. Without Python or a renderer the existing order is kept and the report
+says the layout was not checked. The procedure is in the "Layout optimisation"
+section of the conventions.
+
 ### Hooks
 
 Both hooks are optional: the agent asks before running them.
@@ -123,6 +136,7 @@ Both hooks are optional: the agent asks before running them.
 ```yaml
 architecture_dir: "docs/architecture"   # project-level views
 feature_file: "architecture.md"         # per-feature document name
+mermaid_cli: "mmdc"                     # or "npx -y @mermaid-js/mermaid-cli"
 ```
 
 ## Conventions

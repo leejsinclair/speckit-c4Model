@@ -11,6 +11,8 @@ handoffs:
     prompt: Create a checklist for the following domain...
 ---
 
+<!-- markdownlint-disable-file MD041 -->
+
 > **C4 Model preset: additional Phase 1 deliverable.** This planning run must also
 > produce the feature's architecture document, `architecture.md`, as described in
 > "C4 Architecture Diagrams" at the end of this command. It is a Phase 1 output
@@ -27,7 +29,8 @@ This section adds a step to **Phase 1: Design & Contracts**. Run it after
 them.
 
 **Locations.** Read `.specify/extensions/c4/c4-config.yml` if it exists; otherwise
-use `architecture_dir: docs/architecture` and `feature_file: architecture.md`.
+use `architecture_dir: docs/architecture`, `feature_file: architecture.md` and
+`mermaid_cli: mmdc`.
 `ARCH_DIR` is `architecture_dir` from the repository root. `FEATURE_ARCH` is
 `<feature_file>` in the feature directory, next to IMPL_PLAN.
 
@@ -50,7 +53,10 @@ installed. Skip this section, leave the plan's `## Architecture` section as
      run did not produce.
    - **Components**: one `C4Component` diagram and component table per container
      this feature adds or changes, consistent with Technical Context and the source
-     tree in Project Structure.
+     tree in Project Structure. Choose each diagram's declaration order with the
+     "Layout optimisation" procedure in the conventions, using
+     `python3 .specify/extensions/c4/scripts/python/c4_layout.py optimise` with
+     `--mmdc "<mermaid_cli>"`.
    - **Flows**: one `sequenceDiagram` per user story's primary path, in priority
      order, plus architecturally significant alternate or failure paths. Message
      labels match `contracts/`. Name the user story and the requirements covered.
@@ -72,7 +78,9 @@ installed. Skip this section, leave the plan's `## Architecture` section as
    - Add `architecture.md` to the documentation tree under "Project Structure" in
      IMPL_PLAN, as a Phase 1 output.
    - Include `FEATURE_ARCH` among the generated artifacts in the Completion Report,
-     with the count of component, sequence and ER diagrams.
+     with the count of component, sequence and ER diagrams and, per component
+     diagram, whether its layout was rendered and already sufficient, rendered and
+     optimised, or not checked.
 
 Do not edit the project-level views in `ARCH_DIR` during planning. They are updated
 from the Architecture Impact table by `__SPECKIT_COMMAND_C4_SYSTEM__` once the

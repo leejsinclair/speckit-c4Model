@@ -18,6 +18,10 @@ requires:
       description: "Mermaid CLI, used by speckit.c4.validate to parse diagrams when available"
       install_url: "https://github.com/mermaid-js/mermaid-cli"
       required: false
+    - name: "python3"
+      description: "Python 3, used by scripts/python/c4_layout.py to compare and measure C4 diagram layouts"
+      install_url: "https://www.python.org/downloads/"
+      required: false
 
 provides:
   commands:
@@ -77,3 +81,4 @@ config:
   defaults:
     architecture_dir: "docs/architecture"
     feature_file: "architecture.md"
+    mermaid_cli: "mmdc"

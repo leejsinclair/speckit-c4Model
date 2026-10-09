@@ -1,6 +1,7 @@
 # System Context: [SYSTEM NAME]
 
-**C4 level**: 1 - System context | **Last updated**: [DATE] | **Updated for**: [###-feature-name or "initial"]
+**C4 level**: 1 - System context | **Last updated**: [DATE] |
+**Updated for**: [###-feature-name or "initial"]
 **Related views**: [Containers](./containers.md) | [Data model](./erd.md)
 
 <!--

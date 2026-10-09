@@ -78,6 +78,68 @@ UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
 - Mermaid C4 layout is experimental. Check proposed ordering in the renderer used
   by the project; do not assume a valid diagram or a layout directive improves it.
   `UpdateLayoutConfig` row settings can be renderer-version dependent.
+- Choose the declaration order with the procedure in "Layout optimisation" below.
+
+## Layout optimisation
+
+Mermaid places C4 elements in declaration order, so the order of element lines is
+the only layout control. Treat it as something to measure, not predict. Apply this
+procedure to each C4 diagram after its content is correct. It never changes what the
+diagram says: only whole element lines move, and only within their peer group
+(people, the elements of one boundary, external systems).
+
+The helper `.specify/extensions/c4/scripts/python/c4_layout.py` (Python 3, standard library
+only) does the mechanical steps. `MERMAID_CLI` is `mermaid_cli` from
+`.specify/extensions/c4/c4-config.yml`, default `mmdc`. Write its output to a
+temporary directory outside the repository.
+
+```text
+python3 .specify/extensions/c4/scripts/python/c4_layout.py optimise <file.md> --block <n> --out <tmp-dir> --mmdc "<MERMAID_CLI>"
+python3 .specify/extensions/c4/scripts/python/c4_layout.py check <before> <after>
+```
+
+`--block <n>` is the position of the diagram among the C4 blocks in the file.
+
+1. **Check the diagram as written first.** Run `optimise`. It renders and measures
+   the existing order before anything else. If the result has
+   `"baseline_sufficient": true`, open the one image it lists. If the image is
+   readable, stop: keep the order and report the layout as rendered and sufficient.
+   If you see a defect the measurements miss (an awkward bend, a label that could
+   belong to two lines), run `optimise` again with `--force`.
+2. **Compare candidates.** Otherwise `optimise` writes up to five orderings
+   (`baseline`, `connected`, `primary-path`, `reversed-peers`, `rows`), renders each
+   and ranks them by penalty score, lowest first:
+
+   | Defect | Penalty |
+   |--------|--------:|
+   | Crossing between two relationship lines (`X`) | 5 |
+   | Line through an unrelated element (`N`) | 6 |
+   | Relationship label over an unrelated element, label or boundary title (`O`) | 6 |
+   | Line through an unrelated relationship label (`T`) | 2 |
+   | Line longer than three element widths (`long`) | 2 |
+   | Canvas more than 1.5 times the baseline area | 3 |
+
+   Label sizes are estimated, so `O` and `T` are approximate. A candidate marked
+   `same_geometry_as_baseline` had no effect in this renderer; discard it.
+3. **Look at the images.** Open the baseline and selected images that `optimise`
+   lists. Confirm the counted defects are real and that the primary flow reads in
+   one direction. The score ranks candidates; the image decides. Keep the baseline
+   when the selected candidate is not clearly easier to read.
+4. **Refine at most twice.** If one defect dominates the selected candidate, move
+   the element that causes it within its peer group, save the result as a new file
+   and run `optimise` on it. Stop when a change gains little.
+5. **Apply and prove fidelity.** Copy the chosen order into the document, then run
+   `check` with the original and the edited file. It must report the same elements,
+   boundaries and relationships. Never remove, reverse or add a relationship to
+   improve a layout.
+6. **Know when ordering cannot help.** If every candidate still has several lines
+   through unrelated elements, the diagram shows too much. Split it as "Keep it
+   readable" describes and say so in the report.
+7. **Report honestly.** For each C4 diagram state one of: rendered and already
+   sufficient; rendered, with the number of candidates compared and the order
+   chosen; or not checked. If `optimise` reports `"measured": false`, or Python is
+   not available, nothing was rendered: follow the ordering rules above, keep any
+   existing order, and report the layout as not checked.
 
 ## Sequence diagram rules
 

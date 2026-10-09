@@ -26,6 +26,7 @@ key that is missing or when the file is absent:
 
 - `architecture_dir`: `docs/architecture`
 - `feature_file`: `architecture.md`
+- `mermaid_cli`: `mmdc`
 
 ## Steps
 
@@ -43,20 +44,23 @@ key that is missing or when the file is absent:
    `__SPECKIT_COMMAND_C4_SYSTEM__`), and stop.
 
 3. **Syntax.** For every Mermaid block in those documents:
-   - If the `mmdc` command is available, extract each block to a temporary file
-     outside the repository and run `mmdc -i <file> -o <file>.svg`. A non-zero exit
-     is a syntax finding; quote the parser message.
+   - If the `mermaid_cli` command is available, extract each block to a temporary
+     file outside the repository and run `<mermaid_cli> -i <file> -o <file>.svg`. A
+     non-zero exit is a syntax finding; quote the parser message.
    - Otherwise review the block by hand: it starts with a valid diagram type, every
      macro and arrow is in the allowed subset from the conventions, brackets and
      quotes balance, and every alias used in a relationship is declared. State in
      the report that syntax was reviewed manually, not parsed.
 
-4. **Rendered readability.** When `mmdc` is available, inspect the rendered C4
-   diagrams as well as their source. Report an **INFO** finding when a relationship
-   crosses an unrelated element or label, labels overlap, relationship lines cross
-   or coincide, or routes are unnecessarily long. Confirm findings in the rendering;
-   syntax validity alone does not establish readability. If rendering is unavailable,
-   say that layout was not visually checked.
+4. **Rendered readability.** When the C4 diagrams were rendered in step 3, measure
+   them with `python3 scripts/python/c4_layout.py score <file>.svg ...` and inspect the
+   renderings as well as the source. Report an **INFO** finding, quoting the counts,
+   when a relationship crosses an unrelated element or label, labels overlap,
+   relationship lines cross or coincide, or routes are unnecessarily long. Label
+   overlap counts are estimates: confirm every finding in the rendering. Syntax
+   validity alone does not establish readability. If rendering or Python is
+   unavailable, say that layout was not measured or not visually checked. This
+   step only reads and writes temporary files outside the repository.
 
 5. **C4 rules.** Check each C4 diagram against the conventions:
    - one level per diagram, and one container per component diagram;
@@ -105,7 +109,8 @@ Severity levels:
 - **INFO**: readability or completeness suggestion.
 
 Follow the table with the count per severity, the documents checked, and whether
-syntax was parsed with `mmdc` or reviewed manually. If there are no findings, say
+syntax was parsed with the Mermaid CLI or reviewed manually, and whether layout was
+measured. If there are no findings, say
 so plainly. If there are findings, offer to fix them with
 `__SPECKIT_COMMAND_C4_FEATURE__` or `__SPECKIT_COMMAND_C4_SYSTEM__`; do not apply
 fixes from this command.
