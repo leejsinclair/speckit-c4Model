@@ -29,13 +29,14 @@ registers the Playwright MCP server; safe to re-run):
 ```
 
 Verify changes in a throwaway project outside this repo (use the scratchpad
-directory, never `.specify/` inside this repo):
+directory, never `.specify/` inside this repo). `<repo>` is the absolute path of this
+repository's root (`git rev-parse --show-toplevel`):
 
 ```bash
 specify init <tmp-project> --integration claude
 cd <tmp-project>
-specify extension add --dev /home/lee/projects/speckit-c4Model
-specify preset add --dev /home/lee/projects/speckit-c4Model
+specify extension add --dev <repo>
+specify preset add --dev <repo>
 
 specify extension list && specify preset list
 specify preset resolve spec-template     # core content + "## System Context"
