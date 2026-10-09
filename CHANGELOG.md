@@ -7,6 +7,8 @@ one version number.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-10
+
 ### Added
 
 - Layout optimisation for C4 diagrams. `scripts/python/c4_layout.py` (Python 3 standard

@@ -46,8 +46,8 @@ Requires Spec Kit 1.0.0 or later and a project created with `specify init`.
 Install the extension first, then the preset. Both come from the same release zip:
 
 ```bash
-specify extension add c4 --from https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.1.0.zip
-specify preset add --from https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.1.0.zip
+specify extension add c4 --from https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.2.0.zip
+specify preset add --from https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.2.0.zip
 ```
 
 ### From a local clone
@@ -72,12 +72,12 @@ installs straight from it.
 3. Commit, then tag and push:
 
    ```bash
-   git tag v0.1.0
-   git push origin main v0.1.0
+    git tag v0.2.0
+    git push origin main v0.2.0
    ```
 
 The zip is then at
-`https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.1.0.zip`.
+`https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.2.0.zip`.
 
 ## Use
 
