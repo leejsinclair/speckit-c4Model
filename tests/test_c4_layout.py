@@ -180,6 +180,18 @@ class CandidateTest(unittest.TestCase):
 
 
 class MeasurementTest(unittest.TestCase):
+    def test_svg_with_a_dtd_is_refused(self):
+        bomb = ('<?xml version="1.0"?><!DOCTYPE svg [<!ENTITY a "aaaa"><!ENTITY b "&a;&a;&a;">]>'
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">&b;</svg>')
+        with tempfile.TemporaryDirectory() as tmp:
+            svg = Path(tmp) / "bomb.svg"
+            svg.write_text(bomb, encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                c4_layout.read_svg(svg)
+            result = run("score", svg)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("DTD", result.stderr)
+
     def test_metrics_match_expected(self):
         for diagram in DIAGRAMS:
             want = expected(diagram)

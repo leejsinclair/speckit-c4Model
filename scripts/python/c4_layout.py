@@ -26,7 +26,7 @@ import shutil
 import subprocess  # nosec B404
 import sys
 
-# Only locally generated Mermaid SVGs are parsed.
+# read_svg refuses any document with a DTD before parsing, which removes entity expansion.
 import xml.etree.ElementTree as ET  # nosec B405
 from pathlib import Path
 
@@ -332,8 +332,11 @@ def route_points(el):
 
 
 def read_svg(path):
-    # Mermaid CLI generated this local SVG; accepting arbitrary XML is outside this tool's boundary.
-    root = ET.parse(path).getroot()  # nosec B314
+    data = Path(path).read_bytes()
+    # Mermaid never emits a DTD, and without one there are no entities to expand.
+    if b"<!DOCTYPE" in data or b"<!ENTITY" in data:
+        sys.exit(f"{path}: SVG files with a DTD are not accepted")
+    root = ET.fromstring(data)  # nosec B314
     prefix = root.get("id", "") + "-"
     view = [float(v) for v in root.get("viewBox", "0 0 0 0").split()]
     nodes, edges, titles = {}, [], []

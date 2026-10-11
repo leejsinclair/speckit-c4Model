@@ -7,6 +7,11 @@ one version number.
 
 ## [Unreleased]
 
+### Security
+
+- `scripts/python/c4_layout.py` refuses an SVG that contains a DTD before parsing
+  it, so entity-expansion input cannot reach the XML parser.
+
 ## [0.2.0] - 2026-10-10
 
 ### Added
