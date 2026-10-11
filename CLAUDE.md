@@ -89,8 +89,8 @@ npx -y @mermaid-js/mermaid-cli -i templates/c4-container-template.md -o <tmp>/ou
 Install from the published tag, as a user would:
 
 ```bash
-specify extension add c4 --from https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.2.0.zip
-specify preset add --from https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.2.0.zip
+specify extension add c4 --from https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.2.1.zip
+specify preset add --from https://github.com/leejsinclair/speckit-c4Model/archive/refs/tags/v0.2.1.zip
 ```
 
 `specify extension add` cannot install a local zip file; use `--dev` for a local

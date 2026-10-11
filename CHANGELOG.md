@@ -5,7 +5,7 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). The extension and the preset share
 one version number.
 
-## [Unreleased]
+## [0.2.1] - 2026-10-11
 
 ### Security
 

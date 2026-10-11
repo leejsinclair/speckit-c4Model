@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "c4"
   name: "C4 Architecture Diagrams"
-  version: "0.2.0"
+  version: "0.2.1"
   description: "C4 model context, container and component diagrams, sequence diagrams for flows and ER diagrams for databases, all in Mermaid"
   category: "docs"
   effect: "read-write"

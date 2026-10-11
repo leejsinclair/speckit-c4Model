@@ -3,7 +3,7 @@ schema_version: "1.0"
 preset:
   id: "c4-model"
   name: "C4 Model Planning"
-  version: "0.2.0"
+  version: "0.2.1"
   description: "Makes the plan workflow produce C4 component, sequence and ER diagrams, and links spec.md and plan.md to the architecture views"
   author: "Lee Sinclair"
   repository: "https://github.com/leejsinclair/speckit-c4Model"
